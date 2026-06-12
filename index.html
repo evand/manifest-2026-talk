@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trading the Joint — Manifest 2026</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0d1117;
+  --fg: #dde3ea;
+  --muted: #98a3b3;
+  --accent: #58a6ff;
+  --gold: #e3b341;
+  --green: #3fb950;
+  --red: #f47067;
+  --card: #161b22;
+  --border: #2d333b;
+}
+.reveal-viewport { background: var(--bg); }
+.reveal { font-family: 'Inter', sans-serif; font-size: 30px; color: var(--fg); }
+.reveal h1, .reveal h2, .reveal h3 {
+  font-family: 'Source Serif 4', serif;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: #f0f4f8;
+}
+.reveal h2 { font-size: 1.55em; margin-bottom: 0.7em; }
+.reveal h2 .kicker, .kicker {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.42em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  margin-bottom: 0.8em;
+}
+.reveal ul { display: block; }
+.reveal li { margin: 0.45em 0; line-height: 1.4; }
+.reveal .small { font-size: 0.68em; color: var(--muted); }
+.reveal .tiny { font-size: 0.55em; color: var(--muted); }
+.reveal a { color: var(--accent); }
+.reveal strong { color: var(--gold); font-weight: 600; }
+.reveal em { color: #c9d4e0; }
+.reveal code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--gold); background: var(--card); padding: 0.05em 0.3em; border-radius: 4px; }
+.muted { color: var(--muted); }
+.accent { color: var(--accent); }
+.gold { color: var(--gold); }
+.green { color: var(--green); }
+.red { color: var(--red); }
+
+/* title slide */
+.titlecard { text-align: left; }
+.titlecard .bigquote {
+  font-family: 'Source Serif 4', serif;
+  font-size: 1.9em;
+  font-weight: 400;
+  line-height: 1.35;
+  text-shadow: 0 2px 24px rgba(0,0,0,0.95), 0 0 80px rgba(0,0,0,0.8);
+  max-width: 17em;
+}
+.titlecard .attrib {
+  font-size: 0.75em;
+  color: #c9d4e0;
+  margin-top: 1.2em;
+  text-shadow: 0 1px 12px rgba(0,0,0,0.95);
+}
+.titlecard .deck-meta {
+  text-align: center;
+  font-size: 0.55em;
+  color: #dde3ea;
+  margin-top: 2.2em;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.95);
+}
+.titlecard .deck-meta .t { font-weight: 600; font-size: 1.25em; color: #fff; }
+
+/* two-column layouts */
+.cols { display: flex; gap: 1.2em; align-items: stretch; text-align: left; }
+.cols > div { flex: 1; }
+
+/* cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.6em 0.8em;
+  margin: 0.4em 0;
+  text-align: left;
+}
+.card .hd { font-weight: 600; color: var(--gold); font-size: 0.8em; margin-bottom: 0.15em; }
+.card .bd { font-size: 0.66em; color: var(--fg); line-height: 1.45; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5em 0.7em; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5em 0.7em; }
+
+/* big statement slides */
+.statement {
+  font-family: 'Source Serif 4', serif;
+  font-size: 1.6em;
+  line-height: 1.4;
+  max-width: 20em;
+  margin: 0 auto;
+}
+
+/* timeline */
+.timeline { text-align: left; font-size: 0.72em; }
+.timeline .row { display: flex; gap: 0.9em; margin: 0.45em 0; align-items: baseline; }
+.timeline .when { flex: 0 0 5.2em; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--accent); white-space: nowrap; }
+.timeline .what { flex: 1; line-height: 1.35; }
+
+/* stat blocks */
+.stats { display: flex; gap: 0.6em; justify-content: center; flex-wrap: wrap; }
+.stat {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 0.5em 0.9em; text-align: center; min-width: 4.2em;
+}
+.stat .n { font-family: 'JetBrains Mono', monospace; font-size: 1.1em; font-weight: 600; color: var(--gold); }
+.stat .l { font-size: 0.5em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; margin-top: 0.3em; }
+
+/* iframe demo */
+.demo-wrap { position: relative; width: 100%; height: 100%; }
+.demo-wrap iframe {
+  width: 100%; height: 100%;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: #fff;
+}
+.demo-bar { font-size: 0.5em; color: var(--muted); margin-top: 0.4em; }
+
+/* table */
+.reveal table { font-size: 0.62em; margin: 0 auto; }
+.reveal table th { color: var(--accent); font-weight: 600; }
+.reveal table td, .reveal table th { border-bottom: 1px solid var(--border); padding: 0.35em 0.8em; }
+
+/* arch svg */
+.arch svg { width: 100%; height: auto; }
+.arch text { font-family: 'Inter', sans-serif; }
+
+.footnote { position: absolute; bottom: -1.5em; left: 0; right: 0; font-size: 0.5em; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ============ 1 · TITLE ============ -->
+<section data-background-color="#000" class="titlecard">
+  <div style="text-align:center;">
+    <img src="assets/flag-meme.jpg" alt="Red flag: WE DO THIS NOT BECAUSE IT IS EASY, BUT BECAUSE WE THOUGHT IT WOULD BE EASY"
+         style="height: 410px; border-radius: 10px; box-shadow: 0 8px 60px rgba(0,0,0,0.9); margin: 0;">
+    <div class="attrib" style="text-align:center; margin-top: 0.5em;">— John F. Kennedy, <em>approximately</em></div>
+  </div>
+  <div class="deck-meta">
+    <span class="t">Trading the Joint</span> &nbsp;·&nbsp; statistical arbitrage on prediction markets<br>
+    Evan Daniel &nbsp;·&nbsp; co-authored with Claude &nbsp;·&nbsp; Manifest 2026
+  </div>
+  <aside class="notes">
+    Tone: this whole project is the gap between "that sounds like a fun month" and the year that followed.
+    The talk is informal — slides ~15 min, then Q&amp;A, then open brainstorming. Tell them that up front.
+  </aside>
+</section>
+
+<!-- ============ 2 · WHY WE CARE ============ -->
+<section>
+  <h2><span class="kicker">Why we care</span>I thought we could do this thing</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="hd">The bet</div>
+      <div class="bd">Treat a pile of related prediction markets as <em>one joint probability distribution</em> — and sample from it.</div>
+    </div>
+    <div class="card">
+      <div class="hd">Trading for grounding</div>
+      <div class="bd">Real positions keep the model honest. If the math is wrong, the market collects the fee. No grading your own homework.</div>
+    </div>
+    <div class="card">
+      <div class="hd">Rich data</div>
+      <div class="bd">Markets price hundreds of overlapping, oddly-shaped quantities — marginals, seat counts, conjunctions, linear payouts — updated continuously.</div>
+    </div>
+    <div class="card">
+      <div class="hd">Capabilities ⇄ requirements</div>
+      <div class="bd">Trading is the <em>requirement</em>; the model is the <em>capability</em>. Each round of trades demanded better math; each round of math made new trades expressible.</div>
+    </div>
+  </div>
+  <p class="small" style="margin-top: 0.8em;">Politics isn't the most interesting application. It's the <strong>easiest one to start on</strong> — dense markets, clean resolution, a single date when everything settles.</p>
+  <aside class="notes">
+    The requirement/capability loop is the real design philosophy: the arb bot forced exact AMM math;
+    exact math made trades safe; safe trades justified a richer model; the richer model demanded better sampling;
+    better samples enabled trades nobody could express before. Neither half survives alone.
+  </aside>
+</section>
+
+<!-- ============ 3 · TYPE ERROR ============ -->
+<section>
+  <h2><span class="kicker">The core reframe</span>&ldquo;This market is mispriced&rdquo; is a type error</h2>
+  <div class="statement" style="font-size: 1.15em; text-align: left; max-width: 26em;">
+    <p><span class="red">✗</span> &nbsp;<em>&ldquo;This market is wrong.&rdquo;</em> &nbsp;<span class="muted">— wrong about what? It's the price.</span></p>
+    <p><span class="green">✓</span> &nbsp;<em>&ldquo;This <strong>set</strong> of markets is inconsistent.&rdquo;</em> &nbsp;<span class="muted">— that type-checks.</span></p>
+  </div>
+  <ul class="small" style="margin-top: 1em;">
+    <li>A valid trade names two-plus markets and a property they disagree about — and bets on the <em>inconsistency resolving</em>.</li>
+    <li>You never need external truth. Only markets disagreeing with each other.</li>
+    <li>Done right, you profit whether D or R wins.</li>
+  </ul>
+  <aside class="notes">
+    For an EMH-aware room this is provocative without triggering the reflex — we're not claiming to out-predict
+    a market on what it directly prices. We're claiming the SET is incoherent and nobody is jointly arbitraging it.
+    Discussion hook to plant for later: where's the line between aggregating the market and overruling it?
+  </aside>
+</section>
+
+<!-- ============ 4 · MARGINAL VS JOINT ============ -->
+<section>
+  <h2><span class="kicker">The object of attention</span>A market is a marginal. You want the joint.</h2>
+  <p style="text-align:left;" class="small">Every market is a one-dimensional shadow of some joint distribution over world-states. We read them one at a time — but the questions worth asking live in the joint:</p>
+  <ul>
+    <li>What's <strong>P(House flips | Senate stays red)</strong>? <span class="small">No market prices it.</span></li>
+    <li>Which race most moves <strong>P(control) per donor dollar</strong>? <span class="small">A correlation query.</span></li>
+    <li>If you think <strong>Georgia is really 60/40</strong> — what does that force Maine to be?</li>
+    <li>How correlated are the <strong>tails</strong>? Wave years are a co-movement story no marginal shows.</li>
+  </ul>
+  <p class="small" style="margin-top: 0.8em;">So: rebuild the joint that the markets are shadows of. Then query it.</p>
+  <aside class="notes">
+    This is the slide that reframes their daily object of attention. Once someone sees
+    "the joint gives me X for free," they start listing their own X's — that's the state we want for the discussion half.
+  </aside>
+</section>
+
+<!-- ============ 5 · LIVE DEMO ============ -->
+<section>
+  <h2 style="margin-bottom:0.3em;"><span class="kicker">Live</span>The joint, running</h2>
+  <div class="r-stretch demo-wrap">
+    <iframe data-src="https://evand.github.io/2026-senate-forecast/" data-preload allow="fullscreen"></iframe>
+  </div>
+  <div class="demo-bar">Live at <a href="https://evand.github.io/2026-senate-forecast/" target="_blank">evand.github.io/2026-senate-forecast</a> — refit from market prices roughly weekly. Click a state. Lock an outcome. Watch everything else move.</div>
+  <aside class="notes">
+    Drive it for ~2 minutes, not more — promise the reprise at the end.
+    Good move: click GA, lock it D, watch the seat histogram and the other lean states shift.
+    That shift IS the joint — no single market knows it.
+  </aside>
+</section>
+
+<!-- ============ 6 · SUPERPOWERS ============ -->
+<section>
+  <h2><span class="kicker">What the joint gives you</span>Six things no single market can</h2>
+  <div class="grid2">
+    <div class="card"><div class="hd">Conditionals, free</div><div class="bd">Every P(A|B), sidestepping thin and ambiguous conditional markets.</div></div>
+    <div class="card"><div class="hd">Conjunctions</div><div class="bd">All 2<sup>N</sup> joint outcomes. No venue lists &ldquo;X ∧ Y ∧ ¬Z.&rdquo;</div></div>
+    <div class="card"><div class="hd">Coherence enforcement</div><div class="bd">Siloed markets that <em>should</em> be arbitraged get reconciled. Leftover inconsistency is the trade signal.</div></div>
+    <div class="card"><div class="hd">Mixed shapes, one object</div><div class="bd">Binary + multi-choice + numeric + linear-payout markets fold into a single distribution.</div></div>
+    <div class="card"><div class="hd">Structure injection</div><div class="bd">Priors and correlations no single market carries — e.g. national swing across House seats.</div></div>
+    <div class="card"><div class="hd">Tail co-movement</div><div class="bd">Correlated extremes — wave years — invisible in every marginal.</div></div>
+  </div>
+  <aside class="notes">Discussion hook: which of these would change how you bet tomorrow?</aside>
+</section>
+
+<!-- ============ 7 · HOW IT WORKS ============ -->
+<section>
+  <h2><span class="kicker">Mechanism — one slide, more on request</span>Maximum entropy, then sample hard</h2>
+  <ul class="small" style="font-size: 0.78em;">
+    <li>A <em>state</em> is one full election outcome — all 470 races at once. That's 2<sup>470</sup> ≈ 10<sup>141</sup> states.</li>
+    <li>Each market price is an expectation constraint: <code>E[φᵢ(state)] = priceᵢ</code> — works for any market shape.</li>
+    <li>Fit the <strong>maximum-entropy</strong> joint matching every price: <code>P(s) ∝ exp(Σ λᵢ φᵢ(s))</code> — the least-committal distribution consistent with what's traded. Where markets are silent, it adds nothing.</li>
+    <li>Constraints overlap and conflict → learned λ via iterative fitting with <strong>Tikhonov regularization</strong>; the residuals that won't go away are the inconsistencies.</li>
+    <li>Sampling: Metropolis-Hastings + <strong>parallel tempering</strong> (13-rung ladder, T=∞ at the top) — because election night is multimodal: blue wave / red wave / split are separated basins.</li>
+    <li>Full Congress refit: <strong>~1.5 h on 16 cores</strong>. The sampler theory ate three months of our lives. Ask me anything.</li>
+  </ul>
+  <aside class="notes">
+    Depth-on-demand: literally ask the room — "want the machinery, or shall we keep poking the outputs?"
+    If they bite: lumpability and why textbook PT prescriptions (0.234 acceptance, equi-AR ladders) silently
+    assume something our landscape breaks. That's a whole other talk.
+  </aside>
+</section>
+
+<!-- ============ 8 · ARCHITECTURE ============ -->
+<section>
+  <h2 style="margin-bottom:0.2em;"><span class="kicker">System</span>The loop</h2>
+  <div class="arch r-stretch" style="display:flex; align-items:center;">
+  <svg viewBox="0 0 1180 560" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#58a6ff"/>
+      </marker>
+      <marker id="arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#e3b341"/>
+      </marker>
+    </defs>
+    <style>
+      .box { fill: #161b22; stroke: #2d333b; stroke-width: 1.5; rx: 12; }
+      .hot { stroke: #e3b341; }
+      .t1 { fill: #f0f4f8; font-size: 24px; font-weight: 600; }
+      .t2 { fill: #98a3b3; font-size: 17px; }
+      .flow { stroke: #58a6ff; stroke-width: 2.5; fill: none; marker-end: url(#arr); }
+      .flowg { stroke: #e3b341; stroke-width: 2.5; fill: none; marker-end: url(#arrg); stroke-dasharray: 7 5; }
+      .lbl { fill: #58a6ff; font-size: 16px; }
+      .lblg { fill: #e3b341; font-size: 16px; }
+    </style>
+
+    <!-- Markets -->
+    <rect class="box hot" x="20" y="180" width="230" height="120" rx="12"/>
+    <text class="t1" x="135" y="228" text-anchor="middle">Manifold markets</text>
+    <text class="t2" x="135" y="256" text-anchor="middle">~100 markets · binary,</text>
+    <text class="t2" x="135" y="278" text-anchor="middle">multi-choice, numeric</text>
+
+    <!-- Snapshot -->
+    <rect class="box" x="310" y="190" width="180" height="100" rx="12"/>
+    <text class="t1" x="400" y="232" text-anchor="middle">Snapshots</text>
+    <text class="t2" x="400" y="260" text-anchor="middle">raw prices, frozen</text>
+
+    <!-- Constraints -->
+    <rect class="box" x="550" y="190" width="200" height="100" rx="12"/>
+    <text class="t1" x="650" y="225" text-anchor="middle">Constraints</text>
+    <text class="t2" x="650" y="252" text-anchor="middle">E[φᵢ] = priceᵢ</text>
+    <text class="t2" x="650" y="274" text-anchor="middle">12 registered types</text>
+
+    <!-- Maxent + sampler -->
+    <rect class="box" x="810" y="160" width="220" height="160" rx="12"/>
+    <text class="t1" x="920" y="200" text-anchor="middle">Maxent fit</text>
+    <text class="t2" x="920" y="228" text-anchor="middle">P(s) ∝ exp(Σλᵢφᵢ)</text>
+    <text class="t1" x="920" y="266" text-anchor="middle">PT sampler</text>
+    <text class="t2" x="920" y="294" text-anchor="middle">MH · 13-rung ladder</text>
+
+    <!-- Samples -->
+    <rect class="box hot" x="845" y="390" width="150" height="90" rx="12"/>
+    <text class="t1" x="920" y="428" text-anchor="middle">The joint</text>
+    <text class="t2" x="920" y="456" text-anchor="middle">500k samples</text>
+
+    <!-- Consumers -->
+    <rect class="box" x="540" y="395" width="240" height="80" rx="12"/>
+    <text class="t1" x="660" y="428" text-anchor="middle">Trade optimizer</text>
+    <text class="t2" x="660" y="456" text-anchor="middle">minimax · covariance · Kelly</text>
+
+    <rect class="box" x="240" y="395" width="240" height="80" rx="12"/>
+    <text class="t1" x="360" y="428" text-anchor="middle">Public forecast</text>
+    <text class="t2" x="360" y="456" text-anchor="middle">queries · conditionals · viz</text>
+
+    <!-- forward flows -->
+    <path class="flow" d="M 250 240 L 303 240"/>
+    <path class="flow" d="M 490 240 L 543 240"/>
+    <path class="flow" d="M 750 240 L 803 240"/>
+    <path class="flow" d="M 920 320 L 920 383"/>
+    <path class="flow" d="M 845 435 L 787 435"/>
+    <path class="flow" d="M 855 390 C 740 338, 480 338, 372 388"/>
+
+    <!-- the loop back -->
+    <path class="flowg" d="M 660 475 C 660 535, 135 545, 135 307"/>
+    <text class="lblg" x="385" y="528" text-anchor="middle">execution: dry-run → live trades → prices move</text>
+
+    <text class="t2" x="1105" y="245" text-anchor="start"></text>
+  </svg>
+  </div>
+  <p class="small" style="margin-top:0.2em;">The model trades against the same markets that feed it. Post-trade refit finds <em>no remaining edge</em> — the loop closes.</p>
+  <aside class="notes">
+    Two things to say out loud: (1) everything between snapshot and samples is model-agnostic — constraint registry
+    is the interface, election is just one model; (2) the gold dashed arrow is the part most "forecast" projects
+    don't have. Trade 011: found M$54 of guaranteed edge, traded it, re-solved — edge gone (−M$2). The market
+    was actually moved to consistency. That's the ground truth no backtest gives you.
+  </aside>
+</section>
+
+<!-- ============ 9 · HISTORY ============ -->
+<section>
+  <h2><span class="kicker">How we got here</span>Twelve months, one rabbit hole</h2>
+  <div class="timeline">
+    <div class="row"><div class="when">Jun 2025</div><div class="what">Repo init: a Python client for Manifold, plus an <strong>arbitrage bot</strong> to keep the client honest. &ldquo;Should take a few weeks.&rdquo;</div></div>
+    <div class="row"><div class="when">Fall 2025</div><div class="what">The AMM rabbit hole: ten proven theorems about Manifold's market maker. The bot trades pairwise inconsistencies for guaranteed profit.</div></div>
+    <div class="row"><div class="when">Jan 2026</div><div class="what">Stat-arb begins: first joint-model trades on the 2026 midterms.</div></div>
+    <div class="row"><div class="when">Feb 2026</div><div class="what">The <span class="red">M$3,500 lesson</span>: <code>1 if 0.27 else 0</code> → 129 wrong-direction trades. Dry-run validation becomes law. Also: first <strong>minimax</strong> trades — guaranteed worst-case profit across all outcomes.</div></div>
+    <div class="row"><div class="when">Spring 2026</div><div class="what">The sampler theory grind nobody planned: parallel tempering, multimodality, ESS bounds, a small pile of original theory docs.</div></div>
+    <div class="row"><div class="when">Jun 2026</div><div class="what">Weekly trade cadence, public forecast site, this talk.</div></div>
+  </div>
+  <div class="stats" style="margin-top: 0.7em;">
+    <div class="stat"><div class="n">1,778</div><div class="l">commits</div></div>
+    <div class="stat"><div class="n">218k</div><div class="l">lines of py</div></div>
+    <div class="stat"><div class="n">239</div><div class="l">test files</div></div>
+    <div class="stat"><div class="n">152</div><div class="l">docs</div></div>
+    <div class="stat"><div class="n">213</div><div class="l">lab notebooks</div></div>
+  </div>
+  <aside class="notes">
+    The Feb bug story is worth 30 seconds: linear markets return floats in [0,1]; Python truthiness made 0.27 → 1.
+    Real money found a bug the tests didn't. That's "trading for grounding" made concrete — and it's why
+    every execution path now goes through dry-run-vs-API validation where the forecast must match exactly.
+  </aside>
+</section>
+
+<!-- ============ 10 · RECEIPTS ============ -->
+<section>
+  <h2><span class="kicker">Receipts</span>Does it work?</h2>
+  <div class="stats">
+    <div class="stat"><div class="n">41</div><div class="l">trades</div></div>
+    <div class="stat"><div class="n">M$17,814</div><div class="l">deployed</div></div>
+    <div class="stat"><div class="n green">+M$429</div><div class="l">mark-to-market</div></div>
+    <div class="stat"><div class="n green">+2.4%</div><div class="l">on cost</div></div>
+  </div>
+  <ul class="small" style="margin-top: 1em;">
+    <li><strong>Mechanical arb confirmed end-to-end</strong>: find edge → trade → re-solve → edge is gone. The market actually moved to consistency.</li>
+    <li>Minimax trades carry <em>guaranteed</em> worst-case profit — positive P&amp;L in every possible election outcome.</li>
+    <li>Bottom of the book, still: the February truthiness bug. The tuition stays on the books until November.</li>
+    <li class="muted">Honesty: M$160 ≈ $1. Total real-money exposure ≈ <strong>$100</strong>. The P&amp;L is a <em>grounding signal</em>, not a business — yet.</li>
+  </ul>
+  <aside class="notes">
+    Don't oversell: +2.4% MTM with most positions unresolved until Nov 3. The interesting claim isn't the return,
+    it's that forecast-vs-actual discrepancies are treated as bugs and chased to zero. "All discrepancies are bugs"
+    is the project's most productive rule.
+  </aside>
+</section>
+
+<!-- ============ 11 · EPISTEMICS ============ -->
+<section>
+  <h2><span class="kicker">The honest slide</span>&ldquo;More confident than the market&rdquo; — two different claims</h2>
+  <div class="cols">
+    <div class="card">
+      <div class="hd">(a) Price ≠ probability</div>
+      <div class="bd">Even one market's price is a <em>biased estimator</em>: compression toward 50%, favorite-longshot bias, cost of locked capital until resolution. We read through the bias when we fit. <span class="gold">This edge is real and free.</span></div>
+    </div>
+    <div class="card">
+      <div class="hd">(b) Inconsistencies persist</div>
+      <div class="bd">Because arbitrage is capital-constrained: thin liquidity, no leverage, Kelly asymmetry near the extremes. <span class="gold">But we're bankroll-limited too</span> — spotting an inconsistency ≠ harvesting it.</div>
+    </div>
+  </div>
+  <p class="statement" style="font-size: 0.95em; margin-top: 0.9em;">Estimate-accuracy and tradable-edge are <em>different claims</em>. Keep them separate and you can be honest about both.</p>
+  <aside class="notes">
+    Discussion hook: when should you trust a synthesized joint over a thick, liquid single market — and when is that hubris?
+    The humility is what earns the room. Friction sources they already know; we're just refusing to blur them together.
+  </aside>
+</section>
+
+<!-- ============ 12 · CALLAIS ============ -->
+<section>
+  <h2><span class="kicker">A cautionary tale from last week</span>Converged ≠ correct</h2>
+  <ul class="small" style="font-size: 0.75em;">
+    <li>A thin Louisiana seat-count market priced in <strong>redistricting risk</strong> our per-seat priors knew nothing about.</li>
+    <li>The fit reconciled the only way maxent knows how: <em>smear the risk symmetrically</em> across LA seats — corr(LA-02, LA-06) ≈ 0.1. Nobody's belief. Internally consistent. Externally wrong.</li>
+    <li><strong>Self-play can't create information.</strong> A model that trades only against markets it already ingested will converge — to coherent nonsense — if a mechanism is missing.</li>
+    <li>The fix needed <em>no conditional market</em>: ingest the mechanism market — P(new LA map) = 0.72 (<em>Callais</em>) — pin the branch everyone already knows (P(LA-06 = D | current map) ≈ 0.99)…</li>
+    <li>…and the contested conditional <strong>falls out by arithmetic</strong>, live, from two cheap unconditional prices.</li>
+  </ul>
+  <p class="small" style="margin-top: 0.7em;"><strong>The rule it taught us:</strong> conditional markets are only needed when <em>both</em> branches are uncertain. One near-deterministic branch makes plain markets fully informative.</p>
+  <aside class="notes">
+    Three lessons packed in one story: (1) joints reveal WHERE risk lives, not just how much;
+    (2) internal consistency is not truth — converged ≠ correct; (3) identification theory becomes a
+    market-authoring rule. Discussion hook: which conditionals in your domain are identified for free,
+    because one branch is already known?
+  </aside>
+</section>
+
+<!-- ============ 13 · MARKET DESIGN ============ -->
+<section>
+  <h2><span class="kicker">Generative direction #1</span>Build the markets you wish existed</h2>
+  <ul class="small">
+    <li><strong>The pain:</strong> full coverage of a joint outcome space is unaffordable — most cells draw no natural interest and need subsidies nobody pays.</li>
+    <li><strong>The reframe:</strong> maxent tolerates partial coverage. Market design stops being &ldquo;cover every outcome&rdquo; and becomes <em>choose a sparse constraint basis</em>.</li>
+    <li><strong>The design question goes information-theoretic:</strong> which market buys the most constraint per subsidy dollar? The engine can score a <em>not-yet-existing</em> market's expected information value before anyone authors it.</li>
+    <li><strong>And flip taker → maker:</strong> price bespoke conjunctions off the joint, hedge in the liquid component markets, charge for the synthesized residual. A structured-products desk for prediction markets.</li>
+  </ul>
+  <aside class="notes">
+    Q&amp;A magnet, historically. Hooks: "if you could only subsidize five markets to pin down a ten-dimensional
+    forecast, which five?" and "what bespoke bet would you want priced — and who'd take the other side?"
+    If Bolton Bailey or fans of his combinatorial-network posts are in the room: he's building the market-side
+    half of this; we have the model-side half. The symbiosis is real.
+  </aside>
+</section>
+
+<!-- ============ 14 · POINT IT ANYWHERE ============ -->
+<section>
+  <h2><span class="kicker">Generative direction #2</span>Point it anywhere</h2>
+  <p class="small" style="text-align:left;">The pattern needs three things: a structured outcome space, multiple noisy partial estimates, and a reason to want them coherent.</p>
+  <div class="grid3">
+    <div class="card"><div class="hd">Sports brackets</div><div class="bd">Conjunction city; bracket markets are marginals of one tree.</div></div>
+    <div class="card"><div class="hd">Company forecasts</div><div class="bd">Regional × product × per-rep numbers, reconciled instead of argued over.</div></div>
+    <div class="card"><div class="hd">Macro scenarios</div><div class="bd">Inflation × unemployment × rate path, one coherent joint.</div></div>
+    <div class="card"><div class="hd">Option surfaces</div><div class="bd">Risk-neutral densities — the messy-instrument cousin.</div></div>
+    <div class="card"><div class="hd">Expert panels</div><div class="bd">Elicit oddly-shaped claims; the fit finds the panel's self-contradictions.</div></div>
+    <div class="card"><div class="hd">Spaceflight timelines</div><div class="bd">Launch windows make multimodality <em>physics</em>. Milestone precedence = implication chains.</div></div>
+  </div>
+  <p class="statement" style="font-size: 0.8em; margin-top: 0.7em;">A belief-reconciliation engine that refuses to drop information for being redundant, conflicting, or oddly shaped.</p>
+  <aside class="notes">
+    The goal state for the room: "where would YOU point it." The spaceflight one is next on our list —
+    a forecast essay where every quantitative claim becomes a constraint, and the engine finds the author's
+    own inconsistencies before publication.
+  </aside>
+</section>
+
+<!-- ============ 15 · CLAUDE ============ -->
+<section>
+  <h2><span class="kicker">Co-author</span>Built with Claude — actually</h2>
+  <ul class="small">
+    <li><em>&ldquo;AI models are geniuses who start from scratch on every task.&rdquo;</em> — Noam Brown. The fix: <strong>the repo is the memory</strong>. 152 docs and 213 task notebooks, written by Claude sessions for the next Claude session.</li>
+    <li><strong>Theory, not just code:</strong> the AMM invariants (10 proven theorems), the maxent/minimax duality work, the PT sampler research program — proposed, proved, and <em>falsified-when-wrong</em> across sessions.</li>
+    <li><strong>Real money, bright lines:</strong> no live trade without dry-run validation; execution artifacts over exit codes; "all discrepancies are bugs." Trust is engineered, not assumed.</li>
+    <li><strong>The division of labor that emerged:</strong> human sets taste, priorities, and bright lines; Claude does math, code, experiments, and the documentation that makes the next session smarter.</li>
+    <li class="muted">This deck: researched, written, and deployed to GitHub Pages by Claude (Opus 4.8) from a one-paragraph brief — including the misquote on slide 1.</li>
+  </ul>
+  <aside class="notes">
+    The audience question is "what can Claude actually do" — the honest answer is: a year-long research
+    collaboration works if and only if you solve the memory problem. The docs aren't documentation,
+    they're the context window. Failure modes worth admitting: Claude wrote the truthiness bug too.
+    The same discipline that catches human bugs catches model bugs.
+  </aside>
+</section>
+
+<!-- ============ 16 · DEMO REPRISE / DISCUSSION ============ -->
+<section>
+  <h2 style="margin-bottom:0.3em;"><span class="kicker">Your turn</span>State a belief — let's see what you're committed to</h2>
+  <div class="r-stretch demo-wrap">
+    <iframe data-src="https://evand.github.io/2026-senate-forecast/" allow="fullscreen"></iframe>
+  </div>
+  <div class="demo-bar">
+    Hooks for the room: a question you'd love priced that no market will resolve cleanly · five markets to pin a ten-dimensional forecast · scattered estimates in your work you'd love to make coherent
+  </div>
+  <aside class="notes">
+    This is the pivot into the discussion half. Let a skeptic drive: have them name a belief
+    ("GA is really 60/40"), condition on it, and read off what else they're now committed to.
+    Then open the floor with whichever hook the room's energy points at.
+  </aside>
+</section>
+
+<!-- ============ 17 · THANKS ============ -->
+<section data-background-image="assets/earthrise.jpg" data-background-size="cover" data-background-position="center"
+         data-background-opacity="0.35" data-background-color="#000">
+  <h2><span class="kicker">Thanks</span>Come argue with the joint</h2>
+  <ul style="list-style: none; margin-left: 0;">
+    <li>📊 &nbsp;Live forecast: <a href="https://evand.github.io/2026-senate-forecast/" target="_blank">evand.github.io/2026-senate-forecast</a></li>
+    <li>🎞️ &nbsp;These slides: <a href="https://evand.github.io/manifest-2026-talk/" target="_blank">evand.github.io/manifest-2026-talk</a></li>
+    <li>✉️ &nbsp;evanbd@gmail.com</li>
+  </ul>
+  <p class="small" style="margin-top: 1.2em;">Evan Daniel · co-authored with Claude · Manifest 2026</p>
+  <p class="tiny">Earthrise: NASA, Apollo 8 (public domain). Flag: the internet's. Misquote: Kennedy's, eventually.</p>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  width: 1280,
+  height: 720,
+  margin: 0.06,
+  transition: 'fade',
+  transitionSpeed: 'fast',
+  slideNumber: 'c/t',
+  controls: true,
+  progress: true,
+  preloadIframes: false,
+  plugins: [ RevealNotes ]
+});
+</script>
+</body>
+</html>
