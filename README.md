@@ -1,4 +1,4 @@
-# Trading the Joint — Manifest 2026
+# Trading the Joint Distribution — Manifest 2026
 
 Slides for an informal Manifest 2026 talk on statistical arbitrage over
 prediction markets: rebuilding the joint distribution that a pile of

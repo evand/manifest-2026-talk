@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trading the Joint — Manifest 2026</title>
+<title>Trading the Joint Distribution — Manifest 2026</title>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
@@ -142,6 +142,7 @@
 .arch text { font-family: 'Inter', sans-serif; }
 
 .footnote { position: absolute; bottom: -1.5em; left: 0; right: 0; font-size: 0.5em; color: var(--muted); }
+.tricks li { break-inside: avoid; }
 </style>
 </head>
 <body>
@@ -156,7 +157,7 @@
     <div class="attrib" style="text-align:center; margin-top: 0.5em;">— John F. Kennedy, <em>approximately</em></div>
   </div>
   <div class="deck-meta">
-    <span class="t">Trading the Joint</span> &nbsp;·&nbsp; statistical arbitrage on prediction markets<br>
+    <span class="t">Trading the Joint Distribution</span> &nbsp;·&nbsp; statistical arbitrage on prediction markets<br>
     Evan Daniel &nbsp;·&nbsp; co-authored with Claude &nbsp;·&nbsp; Manifest 2026
   </div>
   <aside class="notes">
@@ -215,15 +216,15 @@
 
 <!-- ============ 4 · MARGINAL VS JOINT ============ -->
 <section>
-  <h2><span class="kicker">The object of attention</span>A market is a marginal. You want the joint.</h2>
-  <p style="text-align:left;" class="small">Every market is a one-dimensional shadow of some joint distribution over world-states. We read them one at a time — but the questions worth asking live in the joint:</p>
+  <h2><span class="kicker">The object of attention</span>A market is a marginal. You want the joint distribution.</h2>
+  <p style="text-align:left;" class="small">Every market is a one-dimensional shadow of some joint distribution over world-states. We read them one at a time — but the questions worth asking live in the joint distribution:</p>
   <ul>
-    <li>What's <strong>P(House flips | Senate stays red)</strong>? <span class="small">No market prices it.</span></li>
+    <li>What's <strong>P(Dems take the Senate | they lose Georgia)</strong>? <span class="small">No market prices it.</span></li>
     <li>Which race most moves <strong>P(control) per donor dollar</strong>? <span class="small">A correlation query.</span></li>
     <li>If you think <strong>Georgia is really 60/40</strong> — what does that force Maine to be?</li>
     <li>How correlated are the <strong>tails</strong>? Wave years are a co-movement story no marginal shows.</li>
   </ul>
-  <p class="small" style="margin-top: 0.8em;">So: rebuild the joint that the markets are shadows of. Then query it.</p>
+  <p class="small" style="margin-top: 0.8em;">A few joints <em>are</em> traded — the 5-way chamber-control market prices the Senate×House 2×2 directly. Everything finer isn't. So: rebuild the joint distribution the markets are shadows of, then query it.</p>
   <aside class="notes">
     This is the slide that reframes their daily object of attention. Once someone sees
     "the joint gives me X for free," they start listing their own X's — that's the state we want for the discussion half.
@@ -232,11 +233,11 @@
 
 <!-- ============ 5 · LIVE DEMO ============ -->
 <section>
-  <h2 style="margin-bottom:0.3em;"><span class="kicker">Live</span>The joint, running</h2>
+  <h2 style="margin-bottom:0.3em;"><span class="kicker">Live</span>The joint distribution, running</h2>
   <div class="r-stretch demo-wrap">
     <iframe data-src="https://evand.github.io/2026-senate-forecast/" data-preload allow="fullscreen"></iframe>
   </div>
-  <div class="demo-bar">Live at <a href="https://evand.github.io/2026-senate-forecast/" target="_blank">evand.github.io/2026-senate-forecast</a> — refit from market prices roughly weekly. Click a state. Lock an outcome. Watch everything else move.</div>
+  <div class="demo-bar">Live at <a href="https://evand.github.io/2026-senate-forecast/" target="_blank">evand.github.io/2026-senate-forecast</a> — refit from fresh market prices every few days. Click a state. Lock an outcome. Watch everything else move.</div>
   <aside class="notes">
     Drive it for ~2 minutes, not more — promise the reprise at the end.
     Good move: click GA, lock it D, watch the seat histogram and the other lean states shift.
@@ -246,7 +247,7 @@
 
 <!-- ============ 6 · SUPERPOWERS ============ -->
 <section>
-  <h2><span class="kicker">What the joint gives you</span>Six things no single market can</h2>
+  <h2><span class="kicker">What the joint distribution gives you</span>Six things no single market can</h2>
   <div class="grid2">
     <div class="card"><div class="hd">Conditionals, free</div><div class="bd">Every P(A|B), sidestepping thin and ambiguous conditional markets.</div></div>
     <div class="card"><div class="hd">Conjunctions</div><div class="bd">All 2<sup>N</sup> joint outcomes. No venue lists &ldquo;X ∧ Y ∧ ¬Z.&rdquo;</div></div>
@@ -258,29 +259,11 @@
   <aside class="notes">Discussion hook: which of these would change how you bet tomorrow?</aside>
 </section>
 
-<!-- ============ 7 · HOW IT WORKS ============ -->
-<section>
-  <h2><span class="kicker">Mechanism — one slide, more on request</span>Maximum entropy, then sample hard</h2>
-  <ul class="small" style="font-size: 0.78em;">
-    <li>A <em>state</em> is one full election outcome — all 470 races at once. That's 2<sup>470</sup> ≈ 10<sup>141</sup> states.</li>
-    <li>Each market price is an expectation constraint: <code>E[φᵢ(state)] = priceᵢ</code> — works for any market shape.</li>
-    <li>Fit the <strong>maximum-entropy</strong> joint matching every price: <code>P(s) ∝ exp(Σ λᵢ φᵢ(s))</code> — the least-committal distribution consistent with what's traded. Where markets are silent, it adds nothing.</li>
-    <li>Constraints overlap and conflict → learned λ via iterative fitting with <strong>Tikhonov regularization</strong>; the residuals that won't go away are the inconsistencies.</li>
-    <li>Sampling: Metropolis-Hastings + <strong>parallel tempering</strong> (13-rung ladder, T=∞ at the top) — because election night is multimodal: blue wave / red wave / split are separated basins.</li>
-    <li>Full Congress refit: <strong>~1.5 h on 16 cores</strong>. The sampler theory ate three months of our lives. Ask me anything.</li>
-  </ul>
-  <aside class="notes">
-    Depth-on-demand: literally ask the room — "want the machinery, or shall we keep poking the outputs?"
-    If they bite: lumpability and why textbook PT prescriptions (0.234 acceptance, equi-AR ladders) silently
-    assume something our landscape breaks. That's a whole other talk.
-  </aside>
-</section>
-
-<!-- ============ 8 · ARCHITECTURE ============ -->
+<!-- ============ 7 · ARCHITECTURE ============ -->
 <section>
   <h2 style="margin-bottom:0.2em;"><span class="kicker">System</span>The loop</h2>
   <div class="arch r-stretch" style="display:flex; align-items:center;">
-  <svg viewBox="0 0 1180 560" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 1180 640" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
         <path d="M 0 0 L 10 5 L 0 10 z" fill="#58a6ff"/>
@@ -296,70 +279,125 @@
       .t2 { fill: #98a3b3; font-size: 17px; }
       .flow { stroke: #58a6ff; stroke-width: 2.5; fill: none; marker-end: url(#arr); }
       .flowg { stroke: #e3b341; stroke-width: 2.5; fill: none; marker-end: url(#arrg); stroke-dasharray: 7 5; }
-      .lbl { fill: #58a6ff; font-size: 16px; }
+      .lbl { fill: #58a6ff; font-size: 16px; font-style: italic; }
       .lblg { fill: #e3b341; font-size: 16px; }
     </style>
 
+    <!-- State space (the shared language) -->
+    <rect class="box hot" x="330" y="14" width="540" height="104" rx="12"/>
+    <text class="t1" x="600" y="50" text-anchor="middle">State space S</text>
+    <text class="t2" x="600" y="78" text-anchor="middle">one state = a complete election outcome, all 470 races at once</text>
+    <text class="t2" x="600" y="102" text-anchor="middle">2⁴⁷⁰ ≈ 10¹⁴¹ possible states</text>
+
     <!-- Markets -->
-    <rect class="box hot" x="20" y="180" width="230" height="120" rx="12"/>
-    <text class="t1" x="135" y="228" text-anchor="middle">Manifold markets</text>
-    <text class="t2" x="135" y="256" text-anchor="middle">~100 markets · binary,</text>
-    <text class="t2" x="135" y="278" text-anchor="middle">multi-choice, numeric</text>
+    <rect class="box" x="20" y="230" width="230" height="120" rx="12"/>
+    <text class="t1" x="135" y="278" text-anchor="middle">Manifold markets</text>
+    <text class="t2" x="135" y="306" text-anchor="middle">74 markets · binary,</text>
+    <text class="t2" x="135" y="328" text-anchor="middle">multi-choice, numeric</text>
 
     <!-- Snapshot -->
-    <rect class="box" x="310" y="190" width="180" height="100" rx="12"/>
-    <text class="t1" x="400" y="232" text-anchor="middle">Snapshots</text>
-    <text class="t2" x="400" y="260" text-anchor="middle">raw prices, frozen</text>
+    <rect class="box" x="300" y="240" width="170" height="100" rx="12"/>
+    <text class="t1" x="385" y="282" text-anchor="middle">Snapshots</text>
+    <text class="t2" x="385" y="310" text-anchor="middle">raw prices, frozen</text>
 
-    <!-- Constraints -->
-    <rect class="box" x="550" y="190" width="200" height="100" rx="12"/>
-    <text class="t1" x="650" y="225" text-anchor="middle">Constraints</text>
-    <text class="t2" x="650" y="252" text-anchor="middle">E[φᵢ] = priceᵢ</text>
-    <text class="t2" x="650" y="274" text-anchor="middle">12 registered types</text>
+    <!-- Constraints / indicators -->
+    <rect class="box" x="520" y="230" width="240" height="120" rx="12"/>
+    <text class="t1" x="640" y="266" text-anchor="middle">Markets = indicators</text>
+    <text class="t2" x="640" y="294" text-anchor="middle">φᵢ(s) = payout function</text>
+    <text class="t2" x="640" y="316" text-anchor="middle">price pins it: E[φᵢ] = priceᵢ</text>
+    <text class="t2" x="640" y="338" text-anchor="middle">15 constraint types</text>
 
     <!-- Maxent + sampler -->
-    <rect class="box" x="810" y="160" width="220" height="160" rx="12"/>
-    <text class="t1" x="920" y="200" text-anchor="middle">Maxent fit</text>
-    <text class="t2" x="920" y="228" text-anchor="middle">P(s) ∝ exp(Σλᵢφᵢ)</text>
-    <text class="t1" x="920" y="266" text-anchor="middle">PT sampler</text>
-    <text class="t2" x="920" y="294" text-anchor="middle">MH · 13-rung ladder</text>
+    <rect class="box" x="820" y="210" width="220" height="160" rx="12"/>
+    <text class="t1" x="930" y="248" text-anchor="middle">Maxent fit</text>
+    <text class="t2" x="930" y="276" text-anchor="middle">P(s) ∝ exp(Σλᵢφᵢ(s))</text>
+    <text class="t1" x="930" y="312" text-anchor="middle">PT sampler</text>
+    <text class="t2" x="930" y="340" text-anchor="middle">MH · 16 temperature rungs</text>
 
     <!-- Samples -->
-    <rect class="box hot" x="845" y="390" width="150" height="90" rx="12"/>
-    <text class="t1" x="920" y="428" text-anchor="middle">The joint</text>
-    <text class="t2" x="920" y="456" text-anchor="middle">500k samples</text>
+    <rect class="box hot" x="840" y="460" width="180" height="90" rx="12"/>
+    <text class="t1" x="930" y="498" text-anchor="middle">Joint samples</text>
+    <text class="t2" x="930" y="526" text-anchor="middle">all 470 races, together</text>
 
     <!-- Consumers -->
-    <rect class="box" x="540" y="395" width="240" height="80" rx="12"/>
-    <text class="t1" x="660" y="428" text-anchor="middle">Trade optimizer</text>
-    <text class="t2" x="660" y="456" text-anchor="middle">minimax · covariance · Kelly</text>
+    <rect class="box" x="540" y="465" width="240" height="80" rx="12"/>
+    <text class="t1" x="660" y="498" text-anchor="middle">Trade optimizer</text>
+    <text class="t2" x="660" y="526" text-anchor="middle">minimax · covariance · Kelly</text>
 
-    <rect class="box" x="240" y="395" width="240" height="80" rx="12"/>
-    <text class="t1" x="360" y="428" text-anchor="middle">Public forecast</text>
-    <text class="t2" x="360" y="456" text-anchor="middle">queries · conditionals · viz</text>
+    <rect class="box" x="240" y="465" width="240" height="80" rx="12"/>
+    <text class="t1" x="360" y="498" text-anchor="middle">Public forecast</text>
+    <text class="t2" x="360" y="526" text-anchor="middle">queries · conditionals · viz</text>
+
+    <!-- state-space grounding arrows -->
+    <path class="flow" d="M 560 118 C 540 165, 600 180, 628 224"/>
+    <text class="lbl" x="500" y="180" text-anchor="end">φᵢ defined on S</text>
+    <path class="flow" d="M 800 118 C 850 150, 910 160, 925 204"/>
+    <text class="lbl" x="900" y="165" text-anchor="start">P defined on S</text>
 
     <!-- forward flows -->
-    <path class="flow" d="M 250 240 L 303 240"/>
-    <path class="flow" d="M 490 240 L 543 240"/>
-    <path class="flow" d="M 750 240 L 803 240"/>
-    <path class="flow" d="M 920 320 L 920 383"/>
-    <path class="flow" d="M 845 435 L 787 435"/>
-    <path class="flow" d="M 855 390 C 740 338, 480 338, 372 388"/>
+    <path class="flow" d="M 250 290 L 293 290"/>
+    <path class="flow" d="M 470 290 L 513 290"/>
+    <path class="flow" d="M 760 290 L 813 290"/>
+    <path class="flow" d="M 930 370 L 930 453"/>
+    <path class="flow" d="M 840 505 L 787 505"/>
+    <path class="flow" d="M 850 460 C 750 410, 480 410, 372 458"/>
 
     <!-- the loop back -->
-    <path class="flowg" d="M 660 475 C 660 535, 135 545, 135 307"/>
-    <text class="lblg" x="385" y="528" text-anchor="middle">execution: dry-run → live trades → prices move</text>
-
-    <text class="t2" x="1105" y="245" text-anchor="start"></text>
+    <path class="flowg" d="M 660 545 C 660 612, 135 618, 135 357"/>
+    <text class="lblg" x="395" y="600" text-anchor="middle">execution: dry-run → live trades → prices move</text>
   </svg>
   </div>
-  <p class="small" style="margin-top:0.2em;">The model trades against the same markets that feed it. Post-trade refit finds <em>no remaining edge</em> — the loop closes.</p>
+  <p class="small" style="margin-top:0.2em;">Markets and model share one language — payout functions on S. <strong>Anything you can write as a φ, the model can price; anything the model prices, you can trade back.</strong> Post-trade refits find no remaining edge: the loop closes.</p>
   <aside class="notes">
-    Two things to say out loud: (1) everything between snapshot and samples is model-agnostic — constraint registry
-    is the interface, election is just one model; (2) the gold dashed arrow is the part most "forecast" projects
-    don't have. Trade 011: found M$54 of guaranteed edge, traded it, re-solved — edge gone (−M$2). The market
-    was actually moved to consistency. That's the ground truth no backtest gives you.
+    The state-space box is the slide's real content: a market IS an indicator function with a price pinned to it.
+    Once markets and model speak the same language, the loop follows — model anything you can trade, trade anything
+    you can model. Say out loud: (1) everything between snapshot and samples is model-agnostic — the constraint
+    registry is the interface, elections are just one model; (2) the gold dashed arrow is what most "forecast"
+    projects don't have. Trade 011: found M$54 of guaranteed edge, traded it, re-solved — edge gone (−M$2.34).
+    The market was actually moved to consistency. Ground truth no backtest gives you.
   </aside>
+</section>
+
+<!-- ============ 8 · HOW IT WORKS (+ vertical: bag of tricks) ============ -->
+<section>
+<section>
+  <h2><span class="kicker">Mechanism — one slide, more below</span>Maximum entropy, then sample hard</h2>
+  <ul class="small" style="font-size: 0.78em;">
+    <li>Each market price is an expectation constraint on the state space: <code>E[φᵢ(s)] = priceᵢ</code> — works for any market shape.</li>
+    <li>Fit the <strong>maximum-entropy</strong> joint distribution matching every price: <code>P(s) ∝ exp(Σ λᵢ φᵢ(s))</code> — the least-committal distribution consistent with what's traded. Where markets are silent, it adds nothing.</li>
+    <li>Constraints overlap and conflict → learned λ via iterative fitting with <strong>Tikhonov regularization</strong>; the residuals that won't go away are the inconsistencies.</li>
+    <li>Sampling: Metropolis-Hastings + <strong>parallel tempering</strong> (16-rung ladder, T=∞ at the top) — because election night is multimodal: blue wave / red wave / split are separated basins.</li>
+    <li>Full Congress refit: <strong>2×10⁹ MH steps, ~2 h on 16 cores</strong>. The sampler theory ate three months of our lives.</li>
+    <li class="muted">Press ↓ for the full bag of tricks. Or just ask.</li>
+  </ul>
+  <aside class="notes">
+    Depth-on-demand: literally ask the room — "want the machinery, or shall we keep poking the outputs?"
+    If they bite, the vertical slide below has the full inventory. Honesty if pressed on convergence: R-hat on
+    seat counts still ~1.2–1.5 pooled; the binding uncertainty is rare-cluster excursions, and replication-implied
+    true ESS is more like tens than thousands. That's WHY the diagnostics exist.
+  </aside>
+</section>
+<section>
+  <h2><span class="kicker">Depth on demand</span>The full bag of tricks</h2>
+  <ul class="small tricks" style="font-size: 0.62em; columns: 2; column-gap: 2em;">
+    <li><strong>Parallel tempering</strong>, 16 rungs — ladder frozen at the Polyak log-mean of an adaptive run's settled interior</li>
+    <li><strong>T=∞ top rung</strong> — free mode-hopping; per-cycle correlation ρ ≡ 0 by construction — plus a T=20 hot anchor</li>
+    <li><strong>DEO non-reversible swap schedule</strong> (Syed et al.), swaps every 5 steps</li>
+    <li><strong>Per-rung adaptive proposal rates</strong> targeting 0.234 acceptance; proposal flattening toward uniform at hot rungs</li>
+    <li><strong>Unbroken replica trajectories</strong> across refit iterations (<code>continue_chains</code>) — slow-mode statistics become measurable</li>
+    <li><strong>Warm starts everywhere</strong> — λ from Polyak time-averages, kernel state and per-rung inits from previous runs' pools</li>
+    <li><strong>Jacobi-preconditioned λ updates</strong>, LR schedule 0.1 → 0.05, Tikhonov regularization</li>
+    <li><strong>Pool over the last 10 of 20 iterations</strong> — valid by a rearrangement theorem: pooled-over-drifting-λ ⇔ frozen-at-the-mean</li>
+    <li><strong>Honest diagnostics</strong>: per-functional ESS, R̂, excursion-anatomy N<sub>eff</sub> = N/(1+CV²), ladder-resolution Λ̂</li>
+  </ul>
+  <p class="small" style="margin-top: 0.8em;">Every one of these exists because a run failed without it.</p>
+  <aside class="notes">
+    If anyone asks "why not just use Stan/NUTS": discrete 470-dim state space, no gradients, multimodal —
+    this is the regime where tempering is the tool. The deeper finding: textbook PT prescriptions
+    (0.234 swap targets, equi-AR ladders) silently assume a lumpability property our landscape breaks.
+    That's its own paper-shaped object.
+  </aside>
+</section>
 </section>
 
 <!-- ============ 9 · HISTORY ============ -->
@@ -369,7 +407,7 @@
     <div class="row"><div class="when">Jun 2025</div><div class="what">Repo init: a Python client for Manifold, plus an <strong>arbitrage bot</strong> to keep the client honest. &ldquo;Should take a few weeks.&rdquo;</div></div>
     <div class="row"><div class="when">Fall 2025</div><div class="what">The AMM rabbit hole: ten proven theorems about Manifold's market maker. The bot trades pairwise inconsistencies for guaranteed profit.</div></div>
     <div class="row"><div class="when">Jan 2026</div><div class="what">Stat-arb begins: first joint-model trades on the 2026 midterms.</div></div>
-    <div class="row"><div class="when">Feb 2026</div><div class="what">The <span class="red">M$3,500 lesson</span>: <code>1 if 0.27 else 0</code> → 129 wrong-direction trades. Dry-run validation becomes law. Also: first <strong>minimax</strong> trades — guaranteed worst-case profit across all outcomes.</div></div>
+    <div class="row"><div class="when">Feb 2026</div><div class="what">The <span class="red">M$3,500 day</span>, two bugs at once: <code>1 if 0.27 else 0</code> sent linear-market legs the wrong direction, and a key mismatch failed 129 of 219 orders. Dry-run validation becomes law. Also: first <strong>minimax</strong> trades — guaranteed worst-case profit across all outcomes.</div></div>
     <div class="row"><div class="when">Spring 2026</div><div class="what">The sampler theory grind nobody planned: parallel tempering, multimodality, ESS bounds, a small pile of original theory docs.</div></div>
     <div class="row"><div class="when">Jun 2026</div><div class="what">Weekly trade cadence, public forecast site, this talk.</div></div>
   </div>
@@ -381,9 +419,11 @@
     <div class="stat"><div class="n">213</div><div class="l">lab notebooks</div></div>
   </div>
   <aside class="notes">
-    The Feb bug story is worth 30 seconds: linear markets return floats in [0,1]; Python truthiness made 0.27 → 1.
-    Real money found a bug the tests didn't. That's "trading for grounding" made concrete — and it's why
-    every execution path now goes through dry-run-vs-API validation where the forecast must match exactly.
+    The Feb story is worth 30 seconds, and keep the two bugs distinct: (1) linear markets return floats in [0,1]
+    and Python truthiness made 0.27 → 1 — wrong-direction trades that LANDED; (2) an outcome-key mismatch made
+    129 of 219 orders fail outright — which dry-run would have caught. Real money found bugs the tests didn't.
+    That's "trading for grounding" made concrete — and why every execution path now goes through
+    dry-run-vs-API validation where the forecast must match exactly.
   </aside>
 </section>
 
@@ -455,7 +495,7 @@
     <li><strong>The pain:</strong> full coverage of a joint outcome space is unaffordable — most cells draw no natural interest and need subsidies nobody pays.</li>
     <li><strong>The reframe:</strong> maxent tolerates partial coverage. Market design stops being &ldquo;cover every outcome&rdquo; and becomes <em>choose a sparse constraint basis</em>.</li>
     <li><strong>The design question goes information-theoretic:</strong> which market buys the most constraint per subsidy dollar? The engine can score a <em>not-yet-existing</em> market's expected information value before anyone authors it.</li>
-    <li><strong>And flip taker → maker:</strong> price bespoke conjunctions off the joint, hedge in the liquid component markets, charge for the synthesized residual. A structured-products desk for prediction markets.</li>
+    <li><strong>And flip taker → maker:</strong> price bespoke conjunctions off the joint distribution, hedge in the liquid component markets, charge for the synthesized residual. A structured-products desk for prediction markets.</li>
   </ul>
   <aside class="notes">
     Q&amp;A magnet, historically. Hooks: "if you could only subsidize five markets to pin down a ten-dimensional
@@ -522,7 +562,7 @@
 <!-- ============ 17 · THANKS ============ -->
 <section data-background-image="assets/earthrise.jpg" data-background-size="cover" data-background-position="center"
          data-background-opacity="0.35" data-background-color="#000">
-  <h2><span class="kicker">Thanks</span>Come argue with the joint</h2>
+  <h2><span class="kicker">Thanks</span>Come argue with the joint distribution</h2>
   <ul style="list-style: none; margin-left: 0;">
     <li>📊 &nbsp;Live forecast: <a href="https://evand.github.io/2026-senate-forecast/" target="_blank">evand.github.io/2026-senate-forecast</a></li>
     <li>🎞️ &nbsp;These slides: <a href="https://evand.github.io/manifest-2026-talk/" target="_blank">evand.github.io/manifest-2026-talk</a></li>
@@ -530,6 +570,24 @@
   </ul>
   <p class="small" style="margin-top: 1.2em;">Evan Daniel · co-authored with Claude · Manifest 2026</p>
   <p class="tiny">Earthrise: NASA, Apollo 8 (public domain). Flag: the internet's. Misquote: Kennedy's, eventually.</p>
+</section>
+
+<!-- ============ 18 · REFERENCES ============ -->
+<section>
+  <h2><span class="kicker">References</span>Standing on shoulders</h2>
+  <ul class="small" style="font-size: 0.6em; list-style: none; margin-left: 0;">
+    <li>E. T. Jaynes (1957), <em>Information Theory and Statistical Mechanics</em> — maximum entropy as honest inference.</li>
+    <li>M. Wainwright &amp; M. Jordan (2008), <em>Graphical Models, Exponential Families, and Variational Inference</em> — the marginal-polytope view of coherent prices.</li>
+    <li>R. Hanson (2003), <em>Combinatorial Information Market Design</em> — why combinatorial market makers are hard, and worth it.</li>
+    <li>J. Abernethy, Y. Chen, J. Wortman Vaughan (2013), <em>Efficient Market Making via Convex Optimization</em> — AMM cost functions ↔ proper scoring rules.</li>
+    <li>S. Syed, A. Bouchard-Côté, G. Deligiannidis, A. Doucet (2022), <em>Non-Reversible Parallel Tempering</em> — the DEO swap schedule.</li>
+    <li>Manifold Markets — the venue, and open source: <a href="https://github.com/manifoldmarkets/manifold" target="_blank">github.com/manifoldmarkets/manifold</a> (our AMM math is verified against it, bug-for-bug).</li>
+    <li>Bolton Bailey — combinatorial-arbitrage-network posts on Manifold: the market-side half of this story.</li>
+    <li>Noam Brown — &ldquo;geniuses who start from scratch on every task.&rdquo;</li>
+    <li>NPR <em>tilegramsR</em> — hex-cartogram coordinates in the visualizer.</li>
+    <li>reveal.js · NASA (Earthrise, Apollo 8) · the flag meme (provenance lost to the internet).</li>
+  </ul>
+  <aside class="notes">Not presented — here for anyone photographing slides or reading the deck later.</aside>
 </section>
 
 </div>
