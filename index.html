@@ -548,17 +548,17 @@
 
 <!-- ============ 14 · POINT IT ANYWHERE ============ -->
 <section>
-  <h2><span class="kicker">Generative direction #2</span>Point it anywhere</h2>
-  <p class="small" style="text-align:left;">The pattern needs three things: a structured outcome space, multiple noisy partial estimates, and a reason to want them coherent. The engine is <strong>model-agnostic by construction</strong> — the constraint registry is the only interface. One domain has running code; the rest are seeds.</p>
+  <h2 style="margin-bottom:0.35em;"><span class="kicker">Generative direction #2</span>Point it anywhere</h2>
+  <p class="small" style="text-align:left; margin-top:0.3em;">Three ingredients: a structured outcome space, noisy partial estimates, a reason to want them coherent. The engine is <strong>model-agnostic</strong> — the constraint registry is the only interface. One domain has running code; the rest are seeds.</p>
   <div class="grid3">
-    <div class="card"><div class="hd">Spaceflight timelines <span class="green" style="font-size:0.8em;">· started</span></div><div class="bd">21 markets ingested; recovered one event's full CDF with zero new code. The multi-event consistency model is scoped, not built.</div></div>
-    <div class="card"><div class="hd">Decision markets / futarchy <span class="muted" style="font-size:0.8em;">· seed</span></div><div class="bd">Futarchy runs on conditional decision×outcome markets — the thin ones. Conditional prices are <em>linear constraints</em>: they drop straight into the registry, no new math. The joint keeps the decision network coherent — and can flag when a price reads as do(decision) vs. mere correlation.</div></div>
+    <div class="card"><div class="hd">Spaceflight timelines <span class="green" style="font-size:0.8em;">· started</span></div><div class="bd">21 markets ingested; recovered one event's full CDF with zero new code. Multi-event consistency model scoped, not built.</div></div>
+    <div class="card"><div class="hd">Decision markets / futarchy <span class="muted" style="font-size:0.8em;">· seed</span></div><div class="bd">Conditional decision×outcome prices are <em>linear constraints</em> — they drop into the registry, no new math. The joint enforces coherence and can flag do() vs. correlation.</div></div>
     <div class="card"><div class="hd">Sports brackets <span class="muted" style="font-size:0.8em;">· seed</span></div><div class="bd">Conjunction city; bracket markets are marginals of one tree.</div></div>
     <div class="card"><div class="hd">Company forecasts <span class="muted" style="font-size:0.8em;">· seed</span></div><div class="bd">Regional × product × per-rep numbers, reconciled instead of argued over.</div></div>
     <div class="card"><div class="hd">Macro scenarios <span class="muted" style="font-size:0.8em;">· seed</span></div><div class="bd">Inflation × unemployment × rate path, one coherent joint.</div></div>
     <div class="card"><div class="hd">Option surfaces <span class="muted" style="font-size:0.8em;">· seed</span></div><div class="bd">Risk-neutral densities — the messy-instrument cousin.</div></div>
   </div>
-  <p class="statement" style="font-size: 0.8em; margin-top: 0.7em;">A belief-reconciliation engine that refuses to drop information for being redundant, conflicting, or oddly shaped.</p>
+  <p class="statement" style="font-size: 0.72em; margin-top: 0.5em;">A belief-reconciliation engine that refuses to drop information for being redundant, conflicting, or oddly shaped.</p>
   <aside class="notes">
     Goal state for the room: "where would YOU point it." STATUS HONESTY: spaceflight is the ONLY non-election
     domain with running code, and only at smoke-test depth — `smoke_orbit.py` recovered the Starship-orbit
