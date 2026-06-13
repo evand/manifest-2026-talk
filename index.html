@@ -138,8 +138,10 @@
 .reveal table td, .reveal table th { border-bottom: 1px solid var(--border); padding: 0.35em 0.8em; }
 
 /* arch svg */
-.arch svg { width: 100%; height: auto; }
+.arch { display: block; text-align: center; }
+.arch svg { width: auto; height: 480px; max-width: 100%; display: block; margin: 0 auto; }
 .arch text { font-family: 'Inter', sans-serif; }
+.sup { font-size: 0.62em; baseline-shift: super; }
 
 .footnote { position: absolute; bottom: -1.5em; left: 0; right: 0; font-size: 0.5em; color: var(--muted); }
 .tricks li { break-inside: avoid; }
@@ -221,13 +223,16 @@
   <ul>
     <li>What's <strong>P(Dems take the Senate | they lose Georgia)</strong>? <span class="small">No market prices it.</span></li>
     <li>Which race most moves <strong>P(control) per donor dollar</strong>? <span class="small">A correlation query.</span></li>
-    <li>If you think <strong>Georgia is really 60/40</strong> — what does that force Maine to be?</li>
+    <li>Lock in a <strong>Georgia Democratic win</strong> — what does that pull the other lean states to? <span class="small">Conditioning, live.</span></li>
     <li>How correlated are the <strong>tails</strong>? Wave years are a co-movement story no marginal shows.</li>
   </ul>
   <p class="small" style="margin-top: 0.8em;">A few joints <em>are</em> traded — the 5-way chamber-control market prices the Senate×House 2×2 directly. Everything finer isn't. So: rebuild the joint distribution the markets are shadows of, then query it.</p>
   <aside class="notes">
-    This is the slide that reframes their daily object of attention. Once someone sees
-    "the joint gives me X for free," they start listing their own X's — that's the state we want for the discussion half.
+    Reframes their daily object of attention. Once someone sees "the joint gives me X for free," they start
+    listing their own X's — the state we want for the discussion half. NOTE: the live viewer does HARD
+    conditioning (lock an outcome, rejection-filter the sample cloud). SOFT belief injection — "GA is really
+    60/40" as a min-KL tilt — is NOT built yet (on the punch-list; see last-minute-list.md). Demo the lock,
+    pitch the soft tilt as a wishlist item in discussion.
   </aside>
 </section>
 
@@ -262,7 +267,7 @@
 <!-- ============ 7 · ARCHITECTURE ============ -->
 <section>
   <h2 style="margin-bottom:0.2em;"><span class="kicker">System</span>The loop</h2>
-  <div class="arch r-stretch" style="display:flex; align-items:center;">
+  <div class="arch">
   <svg viewBox="0 0 1180 640" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -287,7 +292,7 @@
     <rect class="box hot" x="330" y="14" width="540" height="104" rx="12"/>
     <text class="t1" x="600" y="50" text-anchor="middle">State space S</text>
     <text class="t2" x="600" y="78" text-anchor="middle">one state = a complete election outcome, all 470 races at once</text>
-    <text class="t2" x="600" y="102" text-anchor="middle">2⁴⁷⁰ ≈ 10¹⁴¹ possible states</text>
+    <text class="t2" x="600" y="102" text-anchor="middle">2<tspan dy="-7" font-size="11">470</tspan><tspan dy="7" font-size="17"> &#8776; 10</tspan><tspan dy="-7" font-size="11">141</tspan><tspan dy="7" font-size="17"> possible states</tspan></text>
 
     <!-- Markets -->
     <rect class="box" x="20" y="230" width="230" height="120" rx="12"/>
@@ -431,21 +436,25 @@
 <section>
   <h2><span class="kicker">Receipts</span>Does it work?</h2>
   <div class="stats">
-    <div class="stat"><div class="n">41</div><div class="l">trades</div></div>
-    <div class="stat"><div class="n">M$17,814</div><div class="l">deployed</div></div>
-    <div class="stat"><div class="n green">+M$429</div><div class="l">mark-to-market</div></div>
-    <div class="stat"><div class="n green">+2.4%</div><div class="l">on cost</div></div>
+    <div class="stat"><div class="n">42</div><div class="l">trades</div></div>
+    <div class="stat"><div class="n">M$18,442</div><div class="l">gross deployed</div></div>
+    <div class="stat"><div class="n green">+M$381</div><div class="l">mark-to-market</div></div>
+    <div class="stat"><div class="n green">+2.1%</div><div class="l">on cost</div></div>
   </div>
   <ul class="small" style="margin-top: 1em;">
-    <li><strong>Mechanical arb confirmed end-to-end</strong>: find edge → trade → re-solve → edge is gone. The market actually moved to consistency.</li>
+    <li><strong>Mechanical arb confirmed end-to-end</strong>: find edge → trade → re-solve → the edge we traded is gone. The market moved <em>closer</em> to consistency.</li>
     <li>Minimax trades carry <em>guaranteed</em> worst-case profit — positive P&amp;L in every possible election outcome.</li>
-    <li>Bottom of the book, still: the February truthiness bug. The tuition stays on the books until November.</li>
-    <li class="muted">Honesty: M$160 ≈ $1. Total real-money exposure ≈ <strong>$100</strong>. The P&amp;L is a <em>grounding signal</em>, not a business — yet.</li>
+    <li><strong>Gross ≫ net:</strong> a new trade that buys the other side of what we hold completes Y/N pairs that redeem M$1 — self-financing the order. The latest trade was <strong>M$642 gross but ≈ M$90 net</strong> mana out the door.</li>
+    <li class="muted">Stakes honesty: Mana ≈ $1/160, so the real money is small; the P&amp;L is a <em>grounding signal</em>, not a business — yet. And the Feb truthiness bug still sits at the bottom of the book until November.</li>
   </ul>
   <aside class="notes">
-    Don't oversell: +2.4% MTM with most positions unresolved until Nov 3. The interesting claim isn't the return,
-    it's that forecast-vs-actual discrepancies are treated as bugs and chased to zero. "All discrepancies are bugs"
-    is the project's most productive rule.
+    Numbers from `make pnl`, 2026-06-12 (refresh before the talk — they move ~daily). Gross M$18,442 = cumulative
+    order volume = current cost basis (positions accumulate, rarely closed). NET is the redemption number: when a
+    trade buys the opposite side of held inventory, the completed Y/N pair redeems M$1 and returns mana, so net
+    capital out is far below gross — trade-042 was M$642 gross → −M$90.4 balance delta (source: curvature_aware_sizing
+    onboarding, M3). We don't log a clean CUMULATIVE net, so quote the per-trade example, not a program total.
+    Don't oversell: +2.1% MTM, most positions unresolved until Nov 3. The real claim isn't the return — it's that
+    forecast-vs-actual discrepancies are treated as bugs and chased to zero.
   </aside>
 </section>
 
@@ -459,13 +468,19 @@
     </div>
     <div class="card">
       <div class="hd">(b) Inconsistencies persist</div>
-      <div class="bd">Because arbitrage is capital-constrained: thin liquidity, no leverage, Kelly asymmetry near the extremes. <span class="gold">But we're bankroll-limited too</span> — spotting an inconsistency ≠ harvesting it.</div>
+      <div class="bd">Arbitrage is gated — for big players by liquidity, leverage, Kelly asymmetry. <span class="gold">For us, it's cadence and depth, not bankroll:</span> each trade exhausts the local edge, and refilling it needs an hours-long refit. Spotting ≠ harvesting.</div>
     </div>
   </div>
   <p class="statement" style="font-size: 0.95em; margin-top: 0.9em;">Estimate-accuracy and tradable-edge are <em>different claims</em>. Keep them separate and you can be honest about both.</p>
   <aside class="notes">
-    Discussion hook: when should you trust a synthesized joint over a thick, liquid single market — and when is that hubris?
-    The humility is what earns the room. Friction sources they already know; we're just refusing to blur them together.
+    We are explicitly NOT bankroll-limited: effective Kelly bankroll ~M$100k dwarfs trade sizes (hundreds of M$);
+    γ/Kelly is "nearly free." The real binders: (1) LIQUIDITY/DEPTH — the concave sizer self-saturates where
+    "markets cannot absorb" more, often only M$177–1,400 net per trade; (2) CADENCE — a trade consumes the
+    available inconsistency, so harvesting more requires a fresh ~2h refit, capping us at ~1–2 trades/day
+    (bounded by sampler wall-clock). Model-confidence and latent-liquidity caps are deliberate governors pending
+    the external-validation program, not a capital shortage. Source: tasks/curvature_aware_sizing/findings_*.
+    Discussion hook: when should you trust a synthesized joint over a thick, liquid single market — and when is
+    that hubris? The humility earns the room.
   </aside>
 </section>
 
@@ -476,15 +491,17 @@
     <li>A thin Louisiana seat-count market priced in <strong>redistricting risk</strong> our per-seat priors knew nothing about.</li>
     <li>The fit reconciled the only way maxent knows how: <em>smear the risk symmetrically</em> across LA seats — corr(LA-02, LA-06) ≈ 0.1. Nobody's belief. Internally consistent. Externally wrong.</li>
     <li><strong>Self-play can't create information.</strong> A model that trades only against markets it already ingested will converge — to coherent nonsense — if a mechanism is missing.</li>
-    <li>The fix needed <em>no conditional market</em>: ingest the mechanism market — P(new LA map) = 0.72 (<em>Callais</em>) — pin the branch everyone already knows (P(LA-06 = D | current map) ≈ 0.99)…</li>
-    <li>…and the contested conditional <strong>falls out by arithmetic</strong>, live, from two cheap unconditional prices.</li>
+    <li>The fix needs <em>no conditional market</em>: ingest the mechanism market — P(new LA map) = 0.72 (<em>Callais</em>) — pin the branch everyone already knows (P(LA-06 = D | current map) ≈ 0.99)…</li>
+    <li>…and the contested conditional <strong>falls out by arithmetic</strong> from two cheap unconditional prices.</li>
   </ul>
-  <p class="small" style="margin-top: 0.7em;"><strong>The rule it taught us:</strong> conditional markets are only needed when <em>both</em> branches are uncertain. One near-deterministic branch makes plain markets fully informative.</p>
+  <p class="small" style="margin-top: 0.7em;"><strong>The rule it taught us:</strong> conditional markets are only needed when <em>both</em> branches are uncertain. One near-deterministic branch makes plain markets fully informative. <span class="muted">(Worked out on paper — not yet wired into the live model.)</span></p>
   <aside class="notes">
     Three lessons packed in one story: (1) joints reveal WHERE risk lives, not just how much;
     (2) internal consistency is not truth — converged ≠ correct; (3) identification theory becomes a
-    market-authoring rule. Discussion hook: which conditionals in your domain are identified for free,
-    because one branch is already known?
+    market-authoring rule. STATUS HONESTY: the diagnosis (symmetric smear, corr≈0.1) is real and computed;
+    the fix (ingest mechanism market + pin known branch → derive the conditional) is worked out but NOT yet
+    implemented in the model or viewer — it's the recipe, not a deployed feature. Discussion hook: which
+    conditionals in your domain are identified for free, because one branch is already known?
   </aside>
 </section>
 
@@ -494,34 +511,39 @@
   <ul class="small">
     <li><strong>The pain:</strong> full coverage of a joint outcome space is unaffordable — most cells draw no natural interest and need subsidies nobody pays.</li>
     <li><strong>The reframe:</strong> maxent tolerates partial coverage. Market design stops being &ldquo;cover every outcome&rdquo; and becomes <em>choose a sparse constraint basis</em>.</li>
-    <li><strong>The design question goes information-theoretic:</strong> which market buys the most constraint per subsidy dollar? The engine can score a <em>not-yet-existing</em> market's expected information value before anyone authors it.</li>
-    <li><strong>And flip taker → maker:</strong> price bespoke conjunctions off the joint distribution, hedge in the liquid component markets, charge for the synthesized residual. A structured-products desk for prediction markets.</li>
+    <li><strong>The design question goes information-theoretic:</strong> which market buys the most constraint per subsidy dollar? <span class="green">Built:</span> a v0 ranking (price-deviation × mutual information) that picks which market to author next. <span class="muted">True value-of-information — entropy reduction ÷ subsidy cost — is designed, not yet built.</span></li>
+    <li><strong>The further reach (concept):</strong> flip taker → maker — price bespoke conjunctions off the joint, hedge in the liquid components, charge for the residual. A structured-products desk for prediction markets.</li>
   </ul>
   <aside class="notes">
-    Q&amp;A magnet, historically. Hooks: "if you could only subsidize five markets to pin down a ten-dimensional
-    forecast, which five?" and "what bespoke bet would you want priced — and who'd take the other side?"
-    If Bolton Bailey or fans of his combinatorial-network posts are in the room: he's building the market-side
-    half of this; we have the model-side half. The symbiosis is real.
+    Honesty on status: the v0 ranking script (deviation × MI, in tasks/extensions_brainstorm_20260610/voi_v0_ranking.py)
+    runs and ranks markets — but it's explicitly NOT full VOI (no prior over the would-be price, no subsidy-cost
+    denominator). "Be the house" / OTC is pure concept — the ingredients exist (joint gives conjunction prices +
+    hedge ratios; arb bot has redemption machinery) but nothing assembles them. Q&amp;A magnet. Hooks: "five
+    markets to pin a ten-dimensional forecast — which five?" and "what bespoke bet would you want priced?"
+    Bolton Bailey builds the market-side half; we have the model-side half — the symbiosis is real.
   </aside>
 </section>
 
 <!-- ============ 14 · POINT IT ANYWHERE ============ -->
 <section>
   <h2><span class="kicker">Generative direction #2</span>Point it anywhere</h2>
-  <p class="small" style="text-align:left;">The pattern needs three things: a structured outcome space, multiple noisy partial estimates, and a reason to want them coherent.</p>
+  <p class="small" style="text-align:left;">The pattern needs three things: a structured outcome space, multiple noisy partial estimates, and a reason to want them coherent. The engine is <strong>model-agnostic by construction</strong> — the constraint registry is the only interface. One domain has running code; the rest are seeds.</p>
   <div class="grid3">
-    <div class="card"><div class="hd">Sports brackets</div><div class="bd">Conjunction city; bracket markets are marginals of one tree.</div></div>
-    <div class="card"><div class="hd">Company forecasts</div><div class="bd">Regional × product × per-rep numbers, reconciled instead of argued over.</div></div>
-    <div class="card"><div class="hd">Macro scenarios</div><div class="bd">Inflation × unemployment × rate path, one coherent joint.</div></div>
-    <div class="card"><div class="hd">Option surfaces</div><div class="bd">Risk-neutral densities — the messy-instrument cousin.</div></div>
-    <div class="card"><div class="hd">Expert panels</div><div class="bd">Elicit oddly-shaped claims; the fit finds the panel's self-contradictions.</div></div>
-    <div class="card"><div class="hd">Spaceflight timelines</div><div class="bd">Launch windows make multimodality <em>physics</em>. Milestone precedence = implication chains.</div></div>
+    <div class="card"><div class="hd">Spaceflight timelines <span class="green" style="font-size:0.8em;">· started</span></div><div class="bd">21 markets ingested; recovered one event's full CDF with zero new code. The multi-event consistency model is scoped, not built.</div></div>
+    <div class="card"><div class="hd">Sports brackets <span class="muted" style="font-size:0.8em;">· seed</span></div><div class="bd">Conjunction city; bracket markets are marginals of one tree.</div></div>
+    <div class="card"><div class="hd">Company forecasts <span class="muted" style="font-size:0.8em;">· seed</span></div><div class="bd">Regional × product × per-rep numbers, reconciled instead of argued over.</div></div>
+    <div class="card"><div class="hd">Macro scenarios <span class="muted" style="font-size:0.8em;">· seed</span></div><div class="bd">Inflation × unemployment × rate path, one coherent joint.</div></div>
+    <div class="card"><div class="hd">Option surfaces <span class="muted" style="font-size:0.8em;">· seed</span></div><div class="bd">Risk-neutral densities — the messy-instrument cousin.</div></div>
+    <div class="card"><div class="hd">Expert panels <span class="muted" style="font-size:0.8em;">· seed</span></div><div class="bd">Elicit oddly-shaped claims; the fit finds the panel's self-contradictions.</div></div>
   </div>
   <p class="statement" style="font-size: 0.8em; margin-top: 0.7em;">A belief-reconciliation engine that refuses to drop information for being redundant, conflicting, or oddly shaped.</p>
   <aside class="notes">
-    The goal state for the room: "where would YOU point it." The spaceflight one is next on our list —
-    a forecast essay where every quantitative claim becomes a constraint, and the engine finds the author's
-    own inconsistencies before publication.
+    Goal state for the room: "where would YOU point it." STATUS HONESTY: spaceflight is the ONLY non-election
+    domain with running code, and only at smoke-test depth — `smoke_orbit.py` recovered the Starship-orbit
+    market's CDF (max err 0.015) using the generic sampler with zero new constraint types. The multi-event
+    mutually-consistent model (the actual hook — milestone precedence as implication chains, launch windows as
+    physical multimodality) is milestone M2+, not built. Sports / company / macro / options / panels are prose
+    seeds, no code. Say "where we could point it," not "where we've pointed it."
   </aside>
 </section>
 
@@ -553,9 +575,11 @@
     Hooks for the room: a question you'd love priced that no market will resolve cleanly · five markets to pin a ten-dimensional forecast · scattered estimates in your work you'd love to make coherent
   </div>
   <aside class="notes">
-    This is the pivot into the discussion half. Let a skeptic drive: have them name a belief
-    ("GA is really 60/40"), condition on it, and read off what else they're now committed to.
-    Then open the floor with whichever hook the room's energy points at.
+    Pivot into the discussion half. Let a skeptic drive: have them name an outcome to LOCK (e.g. "Georgia goes
+    blue"), condition on it, and read off what else moves. Keep it to hard locks — that's what the viewer does.
+    If someone pushes for a soft "I think it's 60/40," that's the min-KL tilt we haven't built — name it as a
+    wishlist item (and a clean demo of the method recapitulating itself), don't fake it. Then open the floor
+    with whichever hook the room's energy points at.
   </aside>
 </section>
 
@@ -572,22 +596,49 @@
   <p class="tiny">Earthrise: NASA, Apollo 8 (public domain). Flag: the internet's. Misquote: Kennedy's, eventually.</p>
 </section>
 
-<!-- ============ 18 · REFERENCES ============ -->
+<!-- ============ 19 · REFERENCES ============ -->
 <section>
-  <h2><span class="kicker">References</span>Standing on shoulders</h2>
-  <ul class="small" style="font-size: 0.6em; list-style: none; margin-left: 0;">
-    <li>E. T. Jaynes (1957), <em>Information Theory and Statistical Mechanics</em> — maximum entropy as honest inference.</li>
-    <li>M. Wainwright &amp; M. Jordan (2008), <em>Graphical Models, Exponential Families, and Variational Inference</em> — the marginal-polytope view of coherent prices.</li>
-    <li>R. Hanson (2003), <em>Combinatorial Information Market Design</em> — why combinatorial market makers are hard, and worth it.</li>
-    <li>J. Abernethy, Y. Chen, J. Wortman Vaughan (2013), <em>Efficient Market Making via Convex Optimization</em> — AMM cost functions ↔ proper scoring rules.</li>
-    <li>S. Syed, A. Bouchard-Côté, G. Deligiannidis, A. Doucet (2022), <em>Non-Reversible Parallel Tempering</em> — the DEO swap schedule.</li>
-    <li>Manifold Markets — the venue, and open source: <a href="https://github.com/manifoldmarkets/manifold" target="_blank">github.com/manifoldmarkets/manifold</a> (our AMM math is verified against it, bug-for-bug).</li>
-    <li>Bolton Bailey — combinatorial-arbitrage-network posts on Manifold: the market-side half of this story.</li>
-    <li>Noam Brown — &ldquo;geniuses who start from scratch on every task.&rdquo;</li>
-    <li>NPR <em>tilegramsR</em> — hex-cartogram coordinates in the visualizer.</li>
-    <li>reveal.js · NASA (Earthrise, Apollo 8) · the flag meme (provenance lost to the internet).</li>
-  </ul>
-  <aside class="notes">Not presented — here for anyone photographing slides or reading the deck later.</aside>
+  <h2 style="margin-bottom:0.4em;"><span class="kicker">References</span>Standing on shoulders</h2>
+  <div class="cols" style="font-size: 0.52em;">
+    <div>
+      <p class="gold" style="font-weight:600; margin:0 0 0.2em;">Sampling &amp; parallel tempering</p>
+      <ul style="list-style:none; margin:0;">
+        <li>Hukushima &amp; Nemoto (1996) — exchange Monte Carlo (replica exchange, the founding method)</li>
+        <li>Earl &amp; Deem (2005) — parallel tempering: theory &amp; perspectives</li>
+        <li>Syed, Bouchard-Côté, Deligiannidis &amp; Doucet (2022) — <em>Non-Reversible Parallel Tempering</em>; the DEO schedule &amp; communication barrier Λ</li>
+        <li>Atchadé, Roberts &amp; Rosenthal (2011) — the 0.234 swap-acceptance target</li>
+        <li>Vousden, Farr &amp; Mandel (2016) — adaptive temperature ladders, T=∞ rung</li>
+        <li>Katzgraber, Trebst, Huse &amp; Troyer (2006) — feedback-optimized ladders</li>
+        <li>Zanella (2020) — locally-balanced proposals for discrete MCMC</li>
+        <li>Kemeny &amp; Snell (1960), <em>Finite Markov Chains</em> — lumpability</li>
+      </ul>
+    </div>
+    <div>
+      <p class="gold" style="font-weight:600; margin:0 0 0.2em;">Markets, maxent &amp; coherence</p>
+      <ul style="list-style:none; margin:0;">
+        <li>Jaynes (1957) — maximum entropy as honest inference</li>
+        <li>de Finetti — coherence &amp; the Dutch book (arbitrage ⇒ a separating hyperplane)</li>
+        <li>Hanson (2003/07) — LMSR &amp; combinatorial market makers (why combinatorial pricing is #P-hard)</li>
+        <li>Wainwright &amp; Jordan (2008) — exponential families &amp; the marginal polytope <span class="muted">(the frame we're building toward)</span></li>
+        <li>Abernethy, Chen &amp; Wortman Vaughan (2013) — market making ↔ convex duality / scoring rules <span class="muted">(idem)</span></li>
+      </ul>
+      <p class="gold" style="font-weight:600; margin:0.5em 0 0.2em;">Tools &amp; sources</p>
+      <ul style="list-style:none; margin:0;">
+        <li>Manifold Markets — venue + open source; our AMM math is verified against it, bug-for-bug</li>
+        <li>Bolton Bailey — combinatorial-arbitrage-network posts (the market-side half of this story)</li>
+        <li>Noam Brown — &ldquo;geniuses who start from scratch on every task&rdquo;</li>
+        <li>reveal.js · NPR tilegramsR (hex cartogram) · NASA Earthrise (Apollo 8) · the flag meme</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes">
+    Not presented — for anyone photographing slides or reading later. The PT/MCMC column is the real, downloaded,
+    load-bearing lineage (PDFs in statarb/docs/references and docs/papers; survey in pt-swap-literature-survey.md).
+    The markets/maxent column is honest about status: Jaynes and Hanson's LMSR are genuinely cited in the docs;
+    Wainwright-Jordan and Abernethy-Chen-Vaughan are the conceptual frame from the extensions brainstorm
+    (marginal polytope, AMM-cost-as-Bregman-divergence) — drawn toward, not yet formally built on. If asked,
+    say so — don't claim a citation we haven't earned.
+  </aside>
 </section>
 
 </div>
