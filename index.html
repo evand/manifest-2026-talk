@@ -444,17 +444,20 @@
   <ul class="small" style="margin-top: 1em;">
     <li><strong>Mechanical arb confirmed end-to-end</strong>: find edge → trade → re-solve → the edge we traded is gone. The market moved <em>closer</em> to consistency.</li>
     <li>Minimax trades carry <em>guaranteed</em> worst-case profit — positive P&amp;L in every possible election outcome.</li>
-    <li><strong>Gross ≫ net:</strong> a new trade that buys the other side of what we hold completes Y/N pairs that redeem M$1 — self-financing the order. The latest trade was <strong>M$642 gross but ≈ M$90 net</strong> mana out the door.</li>
+    <li><strong>Gross ≫ net capital:</strong> many legs buy the other side of inventory we already hold, redeeming Y/N pairs and self-financing the order — several trades net out as <em>sellers</em>. The real capital committed is well below the M$18,442 gross. <span class="muted">(Exactly how far below is an open accounting question — see notes.)</span></li>
     <li class="muted">Stakes honesty: Mana ≈ $1/160, so the real money is small; the P&amp;L is a <em>grounding signal</em>, not a business — yet. And the Feb truthiness bug still sits at the bottom of the book until November.</li>
   </ul>
   <aside class="notes">
     Numbers from `make pnl`, 2026-06-12 (refresh before the talk — they move ~daily). Gross M$18,442 = cumulative
-    order volume = current cost basis (positions accumulate, rarely closed). NET is the redemption number: when a
-    trade buys the opposite side of held inventory, the completed Y/N pair redeems M$1 and returns mana, so net
-    capital out is far below gross — trade-042 was M$642 gross → −M$90.4 balance delta (source: curvature_aware_sizing
-    onboarding, M3). We don't log a clean CUMULATIVE net, so quote the per-trade example, not a program total.
-    Don't oversell: +2.1% MTM, most positions unresolved until Nov 3. The real claim isn't the return — it's that
-    forecast-vs-actual discrepancies are treated as bugs and chased to zero.
+    statarb order volume = current cost basis (positions accumulate, rarely closed) — this number is CLEAN.
+    NET capital is genuinely unresolved, so DON'T quote a precise net on stage: (1) several "net" definitions
+    disagree — trade-042 logged total_netcost −M$287 (a model cash-equivalent counting sell credits as cash, and
+    computed with holdings_file=None), a prose note said ≈−M$90 balance delta (NOT in the logged data), and the
+    raw signed-weight sum was ~−M$800; (2) bet-time redemption self-finances orders, but the credit comes from
+    inventory in a Manifold account SHARED by the statarb and mechanical-arb books — distinguished only by our
+    trade logs — so a clean per-book net isn't currently computed. Honest line if asked: "gross is M$18,442; net
+    is materially less because legs redeem against held inventory, but we don't yet attribute net cleanly per book."
+    The real claim isn't the return anyway — it's that forecast-vs-actual discrepancies are treated as bugs.
   </aside>
 </section>
 
